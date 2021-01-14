@@ -28,6 +28,5 @@ class img_comp(Resource):
         return percentage_difference
 
 api.add_resource(img_comp, '/comp/<id>/', '/comp/<id>')
-
 if __name__ == '__main__':
     app.run(debug=True)
