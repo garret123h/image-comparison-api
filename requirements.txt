@@ -1,5 +1,3 @@
 flask
 flask-restful
 gunicorn
-numpy
-opencv-python
