@@ -2,4 +2,4 @@ flask
 flask-restful
 gunicorn
 numpy
-cv2
+opencv-python
