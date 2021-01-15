@@ -29,9 +29,9 @@ def requires_authorization(f):
 
 class img_comp(Resource):
 
-    @app.route('/<id>/',methods=['GET'])
+    @app.route('/comp',methods=['GET'])
     @requires_authorization
-    def get(self, id):
+    def get(self):
         images = request.get_json()
         image_one = image_two = None
 
@@ -58,7 +58,7 @@ class img_comp(Resource):
         return percentage_difference
 
 
-api.add_resource(img_comp, '/comp/<id>/', '/comp/<id>')
+api.add_resource(img_comp, '/comp/', '/comp')
 
 if __name__ == '__main__':
     user = sys.argv[1]

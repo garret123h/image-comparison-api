@@ -1,5 +1,5 @@
 #With local file names
-curl -u admin http://127.0.0.1:5000/comp/fake-id/ \
+curl -u admin http://127.0.0.1:5000/comp/ \
   --header "Content-Type: application/json" \
   --request GET\
   --data '{"image-one":"./sample_images/original_golden_bridge.jpg",
@@ -7,7 +7,7 @@ curl -u admin http://127.0.0.1:5000/comp/fake-id/ \
             }' 
 
 #With URLs
-curl -u admin http://127.0.0.1:5000/comp/fake-id/ \
+curl -u admin http://127.0.0.1:5000/comp/ \
   --header "Content-Type: application/json" \
   --request GET\
   --data '{"image-one":"https://github.com/garret123h/image-comparison-api/blob/main/sample_images/original_golden_bridge.jpg?raw=true",
