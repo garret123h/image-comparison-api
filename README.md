@@ -1,7 +1,7 @@
 # Image comparison API
 
-
-##Run API locally
+## Instructions
+Run API locally
 Open terminal and navigate to directory.
 Next type in: 'python3 app.py username password' and replace 'username' with desired username and 'password' with desired password.
 Next open another tab in the terminal and enter in some curl commands. In the sample_curl.txt there are sample curl texts to use such as:
