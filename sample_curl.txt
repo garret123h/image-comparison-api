@@ -1,3 +1,4 @@
+#With local file names
 curl -u admin http://127.0.0.1:5000/comp/fake-id/ \
   --header "Content-Type: application/json" \
   --request GET\
@@ -5,3 +6,10 @@ curl -u admin http://127.0.0.1:5000/comp/fake-id/ \
             "image-two":"./sample_images/old_photo.jpg"
             }' 
 
+#With URLs
+curl -u admin http://127.0.0.1:5000/comp/fake-id/ \
+  --header "Content-Type: application/json" \
+  --request GET\
+  --data '{"image-one":"https://github.com/garret123h/image-comparison-api/blob/main/sample_images/original_golden_bridge.jpg?raw=true",
+            "image-two":"https://github.com/garret123h/image-comparison-api/blob/main/sample_images/old_photo.jpg?raw=true"
+            }' 
