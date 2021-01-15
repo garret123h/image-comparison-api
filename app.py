@@ -36,7 +36,6 @@ class img_comp(Resource):
         image_one = image_two = None
 
         if "https://" in images["image-one"]:
-            print('Doing something')
             image_one = io.imread(images["image-one"])
         else:
             image_one = cv2.imread(images["image-one"])
