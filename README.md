@@ -2,30 +2,23 @@
 
 ## Instructions
 Open terminal and navigate to directory.<br />
-Next type in: 'python3 app.py username password' and replace 'username' with desired username and 'password' with desired password.<br />
-Next open another tab in the terminal and enter in some curl commands. In the sample_curl.txt there are sample curl texts to use such as:<br />
-
-curl -u admin http://127.0.0.1:5000/comp/fake-id/ \
+Type in 'python3 app.py && uvicorn app:app --reload' <br /> 
+Now enter into a new tab and enter some curl commands such as; <br />
+curl http://127.0.0.1:8000/compare/kmrhn74zgzcq4nqb \
   --header "Content-Type: application/json" \
   --request GET\
-  --data '{"image-one":"./sample_images/original_golden_bridge.jpg",
-            "image-two":"./sample_images/old_photo.jpg"
-            }'
-            
- or
- 
- curl -u admin http://127.0.0.1:5000/comp/fake-id/ \
-  --header "Content-Type: application/json" \
-  --request GET\
-  --data '{"image-one":"https://github.com/garret123h/image-comparison-api/blob/main/sample_images/original_golden_bridge.jpg?raw=true",
-            "image-two":"https://github.com/garret123h/image-comparison-api/blob/main/sample_images/old_photo.jpg?raw=true"
+  --data '{"image_one":"./sample_images/original_golden_bridge.jpg",
+            "image_two":"./sample_images/old_photo.jpg"
             }' 
 
+or 
 
-Note: where the '-u admin' is, replace admin with your username.<br />
-Add desired images either by relative path, absolute path, or URL.<br />
-
-The program does not take into consideration images that are different sizes. So only input same sized images.<br />
+curl http://127.0.0.1:8000/compare/kmrhn74zgzcq4nqb \
+  --header "Content-Type: application/json" \
+  --request GET\
+  --data '{"image_one":"https://github.com/garret123h/image-comparison-api/blob/main/sample_images/original_golden_bridge.jpg?raw=true",
+            "image_two":"https://github.com/garret123h/image-comparison-api/blob/main/sample_images/old_photo.jpg?raw=true"
+            }' 
 
 Sample testing images:<br />
 ![alt text](https://github.com/garret123h/image-comparison-api/blob/main/run_program.png?raw=true)
