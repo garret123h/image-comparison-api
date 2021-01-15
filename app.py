@@ -1,18 +1,41 @@
 from flask import Flask, jsonify, request
+import functools, sys, cv2, numpy
 from flask_restful import Api, Resource, reqparse
-import cv2
-import numpy 
 
 app = Flask(__name__)
 api = Api(app)
 
+def ok_user_and_password(username, password):
+    print('Saved username --> ', app.config['USERNAME'])
+    print('Saved password --> ', app.config['PASSWORD'])
+    return username == app.config['USERNAME'] and password == app.config['PASSWORD']
+
+def authenticate():
+    message = {'message': "Authenticate."}
+    resp = jsonify(message)
+
+    resp.status_code = 401
+    resp.headers['WWW-Authenticate'] = 'Basic realm="Main"'
+
+    return resp
+
+def requires_authorization(f):
+    @functools.wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not ok_user_and_password(auth.username, auth.password):
+            return authenticate()
+        return f(*args, **kwargs)
+    return decorated
+
 class img_comp(Resource):
 
     @app.route('/<id>/',methods=['GET'])
+    @requires_authorization
     def get(self, id):
         images = request.get_json()
-        image_one = cv2.imread(images['image-one'], 0)
-        image_two = cv2.imread(images['image-two'], 0)
+        image_one = cv2.imread(images["image-one"])
+        image_two = cv2.imread(images["image-two"])
 
         comp_percent = self.compare_images(image_one, image_two)
         
@@ -27,6 +50,14 @@ class img_comp(Resource):
 
         return percentage_difference
 
+
 api.add_resource(img_comp, '/comp/<id>/', '/comp/<id>')
+
 if __name__ == '__main__':
+    user = sys.argv[1]
+    password = sys.argv[2]
+
+    app.config['USERNAME']=user
+    app.config['PASSWORD']=password
+
     app.run(debug=True)
