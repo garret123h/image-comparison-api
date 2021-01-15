@@ -1,7 +1,7 @@
 curl -u admin http://127.0.0.1:5000/comp/fake-id/ \
   --header "Content-Type: application/json" \
   --request GET\
-  --data '{"image-one":"/Users/billgates/Desktop/original_golden_bridge.jpg",
-            "image-two":"/Users/billgates/Desktop/old_photo.jpg"
+  --data '{"image-one":"./sample_images/original_golden_bridge.jpg",
+            "image-two":"./sample_images/old_photo.jpg"
             }' 
 
