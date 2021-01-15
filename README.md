@@ -5,21 +5,21 @@ Open terminal and navigate to directory.<br />
 Next type in: 'python3 app.py username password' and replace 'username' with desired username and 'password' with desired password.<br />
 Next open another tab in the terminal and enter in some curl commands. In the sample_curl.txt there are sample curl texts to use such as:<br />
 
-curl -u admin http://127.0.0.1:5000/comp/fake-id/ \<br />
-  --header "Content-Type: application/json" \<br />
-  --request GET\<br />
-  --data '{"image-one":"./sample_images/original_golden_bridge.jpg",<br />
-            "image-two":"./sample_images/old_photo.jpg"<br />
-            }' <br />
+curl -u admin http://127.0.0.1:5000/comp/fake-id/ \
+  --header "Content-Type: application/json" \
+  --request GET\
+  --data '{"image-one":"./sample_images/original_golden_bridge.jpg",
+            "image-two":"./sample_images/old_photo.jpg"
+            }'
             
- or<br />
+ or
  
- curl -u admin http://127.0.0.1:5000/comp/fake-id/ \<br />
-  --header "Content-Type: application/json" \<br />
-  --request GET\<br />
-  --data '{"image-one":"https://github.com/garret123h/image-comparison-api/blob/main/sample_images/original_golden_bridge.jpg?raw=true",<br />
-            "image-two":"https://github.com/garret123h/image-comparison-api/blob/main/sample_images/old_photo.jpg?raw=true"<br />
-            }' <br />
+ curl -u admin http://127.0.0.1:5000/comp/fake-id/ \
+  --header "Content-Type: application/json" \
+  --request GET\
+  --data '{"image-one":"https://github.com/garret123h/image-comparison-api/blob/main/sample_images/original_golden_bridge.jpg?raw=true",
+            "image-two":"https://github.com/garret123h/image-comparison-api/blob/main/sample_images/old_photo.jpg?raw=true"
+            }' 
 
 
 Note: where the '-u admin' is, replace admin with your username.<br />
