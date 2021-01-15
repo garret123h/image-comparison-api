@@ -1,70 +1,46 @@
-from flask import Flask, jsonify, request
-from flask_restful import Api, Resource, reqparse
-from skimage import io
-import functools, sys, cv2, numpy
+from fastapi import FastAPI
+from pydantic import BaseModel
+from PIL import Image
+from imgcompare import image_diff_percent
+import requests
 
-app = Flask(__name__)
-api = Api(app)
+class Images(BaseModel):
+    image_one: str
+    image_two: str
 
-def ok_user_and_password(username, password):
-    return username == app.config['USERNAME'] and password == app.config['PASSWORD']
+app = FastAPI()
 
-def authenticate():
-    message = {'message': "Authenticate."}
-    resp = jsonify(message)
+@app.get('/compare/{key}')
+async def get(
+        images: Images,
+        key
+        ):
+    image_one = image_two = None
 
-    resp.status_code = 401
-    resp.headers['WWW-Authenticate'] = 'Basic realm="Main"'
+    if not authorize_key(key):
+        return {'Permission': 'Denied'}
 
-    return resp
+    if "https://" in images.image_one:
+        image_one = Image.open(requests.get(images.image_one, stream=True).raw)
+    else:
+        image_one = Image.open(images.image_one)
 
-def requires_authorization(f):
-    @functools.wraps(f)
-    def decorated(*args, **kwargs):
-        auth = request.authorization
-        if not auth or not ok_user_and_password(auth.username, auth.password):
-            return authenticate()
-        return f(*args, **kwargs)
-    return decorated
+    if "https://" in images.image_two:
+        image_two= Image.open(requests.get(images.image_two, stream=True).raw)
+    else:
+        image_two = Image.open(images.image_two)
 
-class img_comp(Resource):
+    diff = 100 - image_diff_percent(image_one, image_two)
 
-    @app.route('/comp',methods=['GET'])
-    @requires_authorization
-    def get(self):
-        images = request.get_json()
-        image_one = image_two = None
+    return {'Percentage Comparison': str(diff) + '%' }
 
-        if "https://" in images["image-one"]:
-            image_one = io.imread(images["image-one"])
-        else:
-            image_one = cv2.imread(images["image-one"])
-        if "https://" in images["image-two"]:
-            image_two = io.imread(images["image-two"])
-        else:
-            image_two = cv2.imread(images["image-two"])
+def authorize_key(client_key):
+    file = open('keys.txt', "r")
+    key = file.readline()
+    while key:
+        key = key.replace('\n', '')
+        if key == client_key: 
+            return True
+        key = file.readline()
+    return False
 
-        comp_percent = self.compare_images(image_one, image_two)
-        
-        return jsonify(
-                {'Percentage Comparison': str(comp_percent) + '%' }
-                )
-
-    def compare_images(self, image_one, image_two):
-        diff = cv2.absdiff(image_one, image_two)
-        diff = diff.astype(numpy.uint8)
-        percentage_difference = (numpy.count_nonzero(diff) * 100 ) / diff.size
-
-        return percentage_difference
-
-
-api.add_resource(img_comp, '/comp/', '/comp')
-
-if __name__ == '__main__':
-    user = sys.argv[1]
-    password = sys.argv[2]
-
-    app.config['USERNAME']=user
-    app.config['PASSWORD']=password
-
-    app.run(debug=True)
