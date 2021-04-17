@@ -35,6 +35,7 @@ async def get(
     return {'Percentage Comparison': str(diff) + '%' }
 
 def authorize_key(client_key):
+    print('hello world')
     file = open('keys.txt', "r")
     key = file.readline()
     while key:
